@@ -15,7 +15,7 @@ function App() {
   const currentTotal = canadianStocksNum + canadianBondsNum + usaStocksNum + intlStocksNum;
   const amountToPurchaseNum = parseFloat(amountToPurchase)
   const newTotal = currentTotal + amountToPurchaseNum;
-  const desiredPer = newTotal / 4;
+  const desiredPer = Math.floor(newTotal / 4);
 
   return (
     <div className="App">
@@ -24,7 +24,7 @@ function App() {
           Portfolio Balancer
         </h1>
 
-        <h3>Current Market Values</h3>
+        <h3>Current market values</h3>
         <div>
           <label>
             Canadian Stocks:
@@ -57,12 +57,12 @@ function App() {
 
         <h3>Therefore...</h3>
         <p>You currently have ${currentTotal} in your portfolio</p>
-        <p>With the amount you are depositing, you will have ${newTotal} in your portfolio</p>
+        <p>With deposit, you will have ${newTotal} in your portfolio</p>
         <p>You want ${desiredPer} per fund</p>
-        <p>Deposit ${desiredPer - canadianStocksNum} into Canadian Stocks</p>
-        <p>Deposit ${desiredPer - canadianBondsNum} into Canadian Bonds</p>
-        <p>Deposit ${desiredPer - usaStocksNum} into USA Stocks</p>
-        <p>Deposit ${desiredPer - intlStocksNum} into Intl Stocks</p>
+        <p>Deposit ${Math.floor(desiredPer - canadianStocksNum)} into Canadian Stocks</p>
+        <p>Deposit ${Math.floor(desiredPer - canadianBondsNum)} into Canadian Bonds</p>
+        <p>Deposit ${Math.floor(desiredPer - usaStocksNum)} into USA Stocks</p>
+        <p>Deposit ${Math.floor(desiredPer - intlStocksNum)} into Intl Stocks</p>
       </header>
     </div>
   );
