@@ -38,15 +38,16 @@ function App() {
                 type="text"
                 value={fund.amount}
                 onChange={(e) => {
-                  const amount = e.target.value;
                   const newFunds = [...funds];
-                  newFunds[index].amount = amount;
+                  newFunds[index].amount = e.target.value;
                   setFunds(newFunds);
                 }}
               />
             </label>
           </div>
         ))}
+        <p>Total: ${currentTotal.toLocaleString()}</p>
+
         <h3>Amount to buy</h3>
         <label>
           <input
@@ -55,10 +56,9 @@ function App() {
             onChange={(e) => setAmountToPurchase(e.target.value)}
           />
         </label>
+        <p>New total: ${newTotal.toLocaleString()}</p>
 
         <h3>Therefore...</h3>
-        <p>You currently have ${currentTotal.toLocaleString()} in your portfolio</p>
-        <p>After buys, you will have ${newTotal.toLocaleString()} in your portfolio</p>
         <p>You want ${desiredPer.toLocaleString()} per fund</p>
         {funds.map((fund) => (
           <p>
