@@ -1,70 +1,71 @@
 import React, { useState } from 'react';
 import './App.css';
 
+interface Fund {
+  name: string;
+  code: string;
+  amount: string;
+}
+
 function App() {
-  const [canadianIndex, setCanadianIndex] = useState('');
-  const [usaIndex, setUsaIndex] = useState('');
-  const [canadianBondIndex, setCanadianBondIndex] = useState('');
-  const [internationalIndex, setInternationalIndex] = useState('');
+  const [funds, setFunds] = useState<Fund[]>([
+    { name: 'Canadian Index', code: 'TDB900', amount: '' },
+    { name: 'USA Index', code: 'TDB902', amount: '' },
+    { name: 'Canadian Bonds', code: 'TDB909', amount: '' },
+    { name: 'International Index', code: 'TDB911', amount: '' },
+  ]);
   const [amountToPurchase, setAmountToPurchase] = useState('');
 
-  const canadianIndexNum = parseFloat(canadianIndex) || 0;
-  const canadianBondIndexNum = parseFloat(canadianBondIndex) || 0;
-  const usaIndexNum = parseFloat(usaIndex) || 0;
-  const internationalIndexNum = parseFloat(internationalIndex) || 0;
-  const currentTotal = canadianIndexNum + canadianBondIndexNum + usaIndexNum + internationalIndexNum;
+  const currentTotal = funds.reduce(
+    (previous, current) => previous + parseFloat(current.amount) || 0,
+    0,
+  );
   const amountToPurchaseNum = parseFloat(amountToPurchase) || 0;
   const newTotal = currentTotal + amountToPurchaseNum;
-  const desiredPer = Math.floor(newTotal / 4);
-
-  const remainder = (current: number) => Math.floor(desiredPer - current).toLocaleString();
+  const desiredPer = Math.floor(newTotal / funds.length);
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>
-          Portfolio Balancer
-        </h1>
+        <h1>Portfolio Balancer</h1>
 
         <h3>Current market values</h3>
-        <div>
-          <label>
-            Canadian Index (TDB900):
-            <input type="text" value={canadianIndex} onChange={(e) => setCanadianIndex(e.target.value)} />
-          </label>
-        </div>
-        <div>
-          <label>
-            USA Stocks (TDB902):
-            <input type="text" value={usaIndex} onChange={(e) => setUsaIndex(e.target.value)} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Canadian Bond Index (TDB909):
-            <input type="text" value={canadianBondIndex} onChange={(e) => setCanadianBondIndex(e.target.value)} />
-          </label>
-        </div>
-        <div>
-          <label>
-            International Index (TDB911):
-            <input type="text" value={internationalIndex} onChange={(e) => setInternationalIndex(e.target.value)} />
-          </label>
-        </div>
-
+        {funds.map((fund, index) => (
+          <div>
+            <label>
+              {fund.name} ({fund.code}):
+              <input
+                type="text"
+                value={fund.amount}
+                onChange={(e) => {
+                  const amount = e.target.value;
+                  const newFunds = [...funds];
+                  newFunds[index].amount = amount;
+                  setFunds(newFunds);
+                }}
+              />
+            </label>
+          </div>
+        ))}
         <h3>Amount to buy</h3>
         <label>
-          <input type="text" value={amountToPurchase} onChange={(e) => setAmountToPurchase(e.target.value)} />
+          <input
+            type="text"
+            value={amountToPurchase}
+            onChange={(e) => setAmountToPurchase(e.target.value)}
+          />
         </label>
 
         <h3>Therefore...</h3>
         <p>You currently have ${currentTotal.toLocaleString()} in your portfolio</p>
         <p>After buys, you will have ${newTotal.toLocaleString()} in your portfolio</p>
         <p>You want ${desiredPer.toLocaleString()} per fund</p>
-        <p>Buy ${remainder(canadianIndexNum)} of Canadian index (TDB900)</p>
-        <p>Buy ${remainder(usaIndexNum)} of USA index (TDB902)</p>
-        <p>Buy ${remainder(canadianBondIndexNum)} of Canadian bond index (TDB909)</p>
-        <p>Buy ${remainder(internationalIndexNum)} of International index (TDB911)</p>
+        {funds.map((fund) => (
+          <p>
+            Buy ${Math.floor(desiredPer - parseFloat(fund.amount) || 0).toLocaleString()} of{' '}
+            {fund.name} ({fund.code})
+          </p>
+        ))}
       </header>
     </div>
   );
