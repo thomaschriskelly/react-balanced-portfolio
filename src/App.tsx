@@ -17,11 +17,11 @@ function App() {
   const [amountToPurchase, setAmountToPurchase] = useState('');
 
   const currentTotal = funds.reduce(
-    (previous, current) => previous + parseFloat(current.currentAmount) || 0,
+    (previous, current) => previous + (parseFloat(current.currentAmount) || 0),
     0,
   );
   const totalPercent = funds.reduce(
-    (previous, current) => previous + parseInt(current.targetPercent) || 0,
+    (previous, current) => previous + (parseInt(current.targetPercent) || 0),
     0,
   );
   const validTotalPercent = totalPercent === 100;
@@ -35,7 +35,7 @@ function App() {
 
       <h3>Current market values</h3>
       {funds.map((fund, index) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
           <label>
             $ {fund.name} ({fund.code}):
           </label>
@@ -50,13 +50,13 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
         <label>Total:</label>
         <span>${currentTotal.toLocaleString()}</span>
       </div>
 
       <h3>Amount to buy</h3>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
         <label>Amount in CAD</label>
         <input
           type="text"
@@ -64,14 +64,14 @@ function App() {
           onChange={(e) => setAmountToPurchase(e.target.value)}
         />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
         <label>New total:</label>
         <span>${newTotal.toLocaleString()}</span>
       </div>
 
       <h3>Desired breakdown</h3>
       {funds.map((fund, index) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
           <label>
             % {fund.name} ({fund.code}):
           </label>
@@ -86,7 +86,7 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
         <label>Total:</label>
         <span style={{ color: validTotalPercent ? undefined : 'red' }}>{totalPercent}%</span>
       </div>
@@ -94,39 +94,41 @@ function App() {
       {validTotalPercent ? (
         <>
           <h3>Therefore...</h3>
-          {funds.map((fund) => {
-            const { currentAmount, targetPercent } = fund;
-            const currentAmountFloat = parseFloat(currentAmount) || 0;
-            const percentMultiplier = parseInt(targetPercent) / 100;
-            const target = percentMultiplier * newTotal;
-            const difference = target - currentAmountFloat;
-            return (
-              <p>
-                {difference > 0 ? (
-                  <>
-                    Buy $
-                    {difference.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </>
-                ) : (
-                  <>
-                    Sell $
-                    {(-difference).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </>
-                )}{' '}
-                of {fund.name} ({fund.code}) to hit $
-                {target.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </p>
-            );
-          })}
+          <ul>
+            {funds.map((fund) => {
+              const { currentAmount, targetPercent } = fund;
+              const currentAmountFloat = parseFloat(currentAmount) || 0;
+              const percentMultiplier = (parseInt(targetPercent) || 0) / 100;
+              const target = percentMultiplier * newTotal;
+              const difference = target - currentAmountFloat;
+              return (
+                <li>
+                  {difference >= 0 ? (
+                    <>
+                      Buy $
+                      {difference.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </>
+                  ) : (
+                    <>
+                      Sell $
+                      {(-difference).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </>
+                  )}{' '}
+                  of {fund.name} ({fund.code}) to hit $
+                  {target.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </li>
+              );
+            })}
+          </ul>
         </>
       ) : null}
     </div>
