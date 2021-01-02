@@ -99,13 +99,26 @@ function App() {
             const currentAmountFloat = parseFloat(currentAmount) || 0;
             const percentMultiplier = parseInt(targetPercent) / 100;
             const target = percentMultiplier * newTotal;
+            const difference = target - currentAmountFloat;
             return (
               <p>
-                Buy $
-                {(target - currentAmountFloat).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{' '}
+                {difference > 0 ? (
+                  <>
+                    Buy $
+                    {difference.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </>
+                ) : (
+                  <>
+                    Sell $
+                    {(-difference).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </>
+                )}{' '}
                 of {fund.name} ({fund.code}) to hit $
                 {target.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
