@@ -45,7 +45,7 @@ function App() {
         </div>
         <div>
           <label>
-            Intl Stocks:
+            International Stocks:
             <input type="text" value={intlStocks} onChange={(e) => setIntlStocks(e.target.value)} />
           </label>
         </div>
@@ -62,7 +62,7 @@ function App() {
         <p>Deposit ${Math.floor(desiredPer - canadianStocksNum).toLocaleString()} into Canadian Stocks</p>
         <p>Deposit ${Math.floor(desiredPer - canadianBondsNum).toLocaleString()} into Canadian Bonds</p>
         <p>Deposit ${Math.floor(desiredPer - usaStocksNum).toLocaleString()} into USA Stocks</p>
-        <p>Deposit ${Math.floor(desiredPer - intlStocksNum).toLocaleString()} into Intl Stocks</p>
+        <p>Deposit ${Math.floor(desiredPer - intlStocksNum).toLocaleString()} into International Stocks</p>
       </header>
     </div>
   );
