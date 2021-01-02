@@ -56,13 +56,13 @@ function App() {
         </label>
 
         <h3>Therefore...</h3>
-        <p>You currently have ${currentTotal} in your portfolio</p>
-        <p>With deposit, you will have ${newTotal} in your portfolio</p>
-        <p>You want ${desiredPer} per fund</p>
-        <p>Deposit ${Math.floor(desiredPer - canadianStocksNum)} into Canadian Stocks</p>
-        <p>Deposit ${Math.floor(desiredPer - canadianBondsNum)} into Canadian Bonds</p>
-        <p>Deposit ${Math.floor(desiredPer - usaStocksNum)} into USA Stocks</p>
-        <p>Deposit ${Math.floor(desiredPer - intlStocksNum)} into Intl Stocks</p>
+        <p>You currently have ${currentTotal.toLocaleString()} in your portfolio</p>
+        <p>With deposit, you will have ${newTotal.toLocaleString()} in your portfolio</p>
+        <p>You want ${desiredPer.toLocaleString()} per fund</p>
+        <p>Deposit ${Math.floor(desiredPer - canadianStocksNum).toLocaleString()} into Canadian Stocks</p>
+        <p>Deposit ${Math.floor(desiredPer - canadianBondsNum).toLocaleString()} into Canadian Bonds</p>
+        <p>Deposit ${Math.floor(desiredPer - usaStocksNum).toLocaleString()} into USA Stocks</p>
+        <p>Deposit ${Math.floor(desiredPer - intlStocksNum).toLocaleString()} into Intl Stocks</p>
       </header>
     </div>
   );
