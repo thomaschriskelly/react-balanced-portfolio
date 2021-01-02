@@ -17,6 +17,8 @@ function App() {
   const newTotal = currentTotal + amountToPurchaseNum;
   const desiredPer = Math.floor(newTotal / 4);
 
+  const remainder = (current: number) => Math.floor(desiredPer - current).toLocaleString();
+
   return (
     <div className="App">
       <header className="App-header">
@@ -57,12 +59,12 @@ function App() {
 
         <h3>Therefore...</h3>
         <p>You currently have ${currentTotal.toLocaleString()} in your portfolio</p>
-        <p>With buys, you will have ${newTotal.toLocaleString()} in your portfolio</p>
+        <p>After buys, you will have ${newTotal.toLocaleString()} in your portfolio</p>
         <p>You want ${desiredPer.toLocaleString()} per fund</p>
-        <p>Buy ${Math.floor(desiredPer - canadianIndexNum).toLocaleString()} Canadian index (TDB900)</p>
-        <p>Buy ${Math.floor(desiredPer - usaIndexNum).toLocaleString()} USA index (TDB902)</p>
-        <p>Buy ${Math.floor(desiredPer - canadianBondIndexNum).toLocaleString()} Canadian bond index (TDB909)</p>
-        <p>Buy ${Math.floor(desiredPer - internationalIndexNum).toLocaleString()} International index (TDB911)</p>
+        <p>Buy ${remainder(canadianIndexNum)} of Canadian index (TDB900)</p>
+        <p>Buy ${remainder(usaIndexNum)} of USA index (TDB902)</p>
+        <p>Buy ${remainder(canadianBondIndexNum)} of Canadian bond index (TDB909)</p>
+        <p>Buy ${remainder(internationalIndexNum)} of International index (TDB911)</p>
       </header>
     </div>
   );
