@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './App.css';
 
 interface Fund {
   name: string;
@@ -25,48 +24,53 @@ function App() {
   const desiredPer = Math.floor(newTotal / funds.length);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Portfolio Balancer</h1>
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <h1>Portfolio Balancer</h1>
 
-        <h3>Current market values</h3>
-        {funds.map((fund, index) => (
-          <div>
-            <label>
-              {fund.name} ({fund.code}):
-              <input
-                type="text"
-                value={fund.amount}
-                onChange={(e) => {
-                  const newFunds = [...funds];
-                  newFunds[index].amount = e.target.value;
-                  setFunds(newFunds);
-                }}
-              />
-            </label>
-          </div>
-        ))}
-        <p>Total: ${currentTotal.toLocaleString()}</p>
-
-        <h3>Amount to buy</h3>
-        <label>
+      <h3>Current market values</h3>
+      {funds.map((fund, index) => (
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+          <label>
+            {fund.name} ({fund.code}):
+          </label>
           <input
             type="text"
-            value={amountToPurchase}
-            onChange={(e) => setAmountToPurchase(e.target.value)}
+            value={fund.amount}
+            onChange={(e) => {
+              const newFunds = [...funds];
+              newFunds[index].amount = e.target.value;
+              setFunds(newFunds);
+            }}
           />
-        </label>
-        <p>New total: ${newTotal.toLocaleString()}</p>
+        </div>
+      ))}
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+        <label>Total:</label>
+        <span>${currentTotal.toLocaleString()}</span>
+      </div>
 
-        <h3>Therefore...</h3>
-        <p>You want ${desiredPer.toLocaleString()} per fund</p>
-        {funds.map((fund) => (
-          <p>
-            Buy ${Math.floor(desiredPer - parseFloat(fund.amount) || 0).toLocaleString()} of{' '}
-            {fund.name} ({fund.code})
-          </p>
-        ))}
-      </header>
+      <h3>Amount to buy</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+        <label>Amount in CAD</label>
+        <input
+          type="text"
+          value={amountToPurchase}
+          onChange={(e) => setAmountToPurchase(e.target.value)}
+        />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+        <label>New total:</label>
+        <span>${newTotal.toLocaleString()}</span>
+      </div>
+
+      <h3>Therefore...</h3>
+      <p>You want ${desiredPer.toLocaleString()} per fund</p>
+      {funds.map((fund) => (
+        <p>
+          Buy ${Math.floor(desiredPer - parseFloat(fund.amount) || 0).toLocaleString()} of{' '}
+          {fund.name} ({fund.code})
+        </p>
+      ))}
     </div>
   );
 }
