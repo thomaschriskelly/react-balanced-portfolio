@@ -3,35 +3,34 @@ import React, { useState } from 'react';
 interface Fund {
   name: string;
   code: string;
-  amount: string;
-  percent: string;
+  currentAmount: string;
+  targetPercent: string;
 }
 
 function App() {
   const [funds, setFunds] = useState<Fund[]>([
-    { name: 'Canadian Index', code: 'TDB900', amount: '', percent: '25' },
-    { name: 'USA Index', code: 'TDB902', amount: '', percent: '25' },
-    { name: 'Canadian Bonds', code: 'TDB909', amount: '', percent: '25' },
-    { name: 'International Index', code: 'TDB911', amount: '', percent: '25' },
+    { name: 'Canadian Index', code: 'TDB900', currentAmount: '', targetPercent: '25' },
+    { name: 'USA Index', code: 'TDB902', currentAmount: '', targetPercent: '25' },
+    { name: 'Canadian Bonds', code: 'TDB909', currentAmount: '', targetPercent: '25' },
+    { name: 'International Index', code: 'TDB911', currentAmount: '', targetPercent: '25' },
   ]);
   const [amountToPurchase, setAmountToPurchase] = useState('');
 
   const currentTotal = funds.reduce(
-    (previous, current) => previous + parseFloat(current.amount) || 0,
+    (previous, current) => previous + parseFloat(current.currentAmount) || 0,
     0,
   );
   const totalPercent = funds.reduce(
-    (previous, current) => previous + parseInt(current.percent) || 0,
+    (previous, current) => previous + parseInt(current.targetPercent) || 0,
     0,
   );
-  const amountToPurchaseNum = parseFloat(amountToPurchase) || 0;
-  const newTotal = currentTotal + amountToPurchaseNum;
-  const desiredPer = Math.floor(newTotal / funds.length);
-
   const validTotalPercent = totalPercent === 100;
 
+  const amountToPurchaseNum = parseFloat(amountToPurchase) || 0;
+  const newTotal = currentTotal + amountToPurchaseNum;
+
   return (
-    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1>Portfolio Balancer</h1>
 
       <h3>Current market values</h3>
@@ -42,10 +41,10 @@ function App() {
           </label>
           <input
             type="text"
-            value={fund.amount}
+            value={fund.currentAmount}
             onChange={(e) => {
               const newFunds = [...funds];
-              newFunds[index].amount = e.target.value;
+              newFunds[index].currentAmount = e.target.value;
               setFunds(newFunds);
             }}
           />
@@ -78,10 +77,10 @@ function App() {
           </label>
           <input
             type="text"
-            value={fund.percent}
+            value={fund.targetPercent}
             onChange={(e) => {
               const newFunds = [...funds];
-              newFunds[index].percent = e.target.value;
+              newFunds[index].targetPercent = e.target.value;
               setFunds(newFunds);
             }}
           />
@@ -95,13 +94,26 @@ function App() {
       {validTotalPercent ? (
         <>
           <h3>Therefore...</h3>
-          <p>You want ${desiredPer.toLocaleString()} per fund</p>
-          {funds.map((fund) => (
-            <p>
-              Buy ${Math.floor(desiredPer - parseFloat(fund.amount) || 0).toLocaleString()} of{' '}
-              {fund.name} ({fund.code})
-            </p>
-          ))}
+          {funds.map((fund) => {
+            const { currentAmount, targetPercent } = fund;
+            const currentAmountFloat = parseFloat(currentAmount) || 0;
+            const percentMultiplier = parseInt(targetPercent) / 100;
+            const target = percentMultiplier * newTotal;
+            return (
+              <p>
+                Buy $
+                {(target - currentAmountFloat).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{' '}
+                of {fund.name} ({fund.code}) to hit $
+                {target.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+            );
+          })}
         </>
       ) : null}
     </div>
