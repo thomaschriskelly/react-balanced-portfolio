@@ -40,7 +40,7 @@ function App() {
             $ {fund.name} ({fund.code}):
           </label>
           <input
-            type="text"
+            type="number"
             value={fund.currentAmount}
             onChange={(e) => {
               const newFunds = [...funds];
@@ -59,7 +59,7 @@ function App() {
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
         <label>Amount in CAD</label>
         <input
-          type="text"
+          type="number"
           value={amountToPurchase}
           onChange={(e) => setAmountToPurchase(e.target.value)}
         />
@@ -76,7 +76,7 @@ function App() {
             % {fund.name} ({fund.code}):
           </label>
           <input
-            type="text"
+            type="number"
             value={fund.targetPercent}
             onChange={(e) => {
               const newFunds = [...funds];
