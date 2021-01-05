@@ -35,7 +35,7 @@ function App() {
 
       <h3>Current market values</h3>
       {funds.map((fund, index) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
           <label>
             $ {fund.name} ({fund.code}):
           </label>
@@ -50,13 +50,13 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>Total:</label>
         <span>${currentTotal.toLocaleString()}</span>
       </div>
 
       <h3>Amount to buy</h3>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>Amount in CAD</label>
         <input
           type="number"
@@ -64,14 +64,14 @@ function App() {
           onChange={(e) => setAmountToPurchase(e.target.value)}
         />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>New total:</label>
         <span>${newTotal.toLocaleString()}</span>
       </div>
 
       <h3>Desired breakdown</h3>
       {funds.map((fund, index) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
           <label>
             % {fund.name} ({fund.code}):
           </label>
@@ -86,7 +86,7 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>Total:</label>
         <span style={{ color: validTotalPercent ? undefined : 'red' }}>{totalPercent}%</span>
       </div>
@@ -102,7 +102,7 @@ function App() {
               const target = percentMultiplier * newTotal;
               const difference = target - currentAmountFloat;
               return (
-                <li>
+                <li style={{ paddingRight: '10px' }}>
                   {difference >= 0 ? (
                     <>
                       Buy $
