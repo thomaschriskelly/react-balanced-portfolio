@@ -101,10 +101,10 @@ function App() {
           </label>
           <input
             type="number"
-            value={fund.targetPercent}
+            defaultValue={fund.targetPercent}
             onChange={(e) => {
               const newFunds = [...funds];
-              newFunds[index].targetPercent = parseInt(e.target.value) ?? 0;
+              newFunds[index].targetPercent = parseInt(e.target.value) || 0;
               setFunds(newFunds);
             }}
           />
