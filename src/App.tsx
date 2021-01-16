@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 interface IFund {
   name: string;
   code: string;
-  currentAmount: string;
-  targetPercent: string;
+  currentAmount: number;
+  targetPercent: number;
 }
 
 interface ITransaction {
@@ -15,47 +15,36 @@ interface ITransaction {
 
 function App() {
   const [funds, setFunds] = useState<IFund[]>([
-    { name: 'Canadian Index', code: 'TDB900', currentAmount: '', targetPercent: '25' },
-    { name: 'USA Index', code: 'TDB902', currentAmount: '', targetPercent: '25' },
-    { name: 'Canadian Bonds', code: 'TDB909', currentAmount: '', targetPercent: '25' },
-    { name: 'International Index', code: 'TDB911', currentAmount: '', targetPercent: '25' },
+    { name: 'Canadian Index', code: 'TDB900', currentAmount: 0, targetPercent: 25 },
+    { name: 'USA Index', code: 'TDB902', currentAmount: 0, targetPercent: 25 },
+    { name: 'Canadian Bonds', code: 'TDB909', currentAmount: 0, targetPercent: 25 },
+    { name: 'International Index', code: 'TDB911', currentAmount: 0, targetPercent: 25 },
   ]);
-  const [amountToPurchase, setAmountToPurchase] = useState('');
+  const [amountToPurchase, setAmountToPurchase] = useState(0);
 
-  const currentTotal = funds.reduce(
-    (previous, current) => previous + (parseFloat(current.currentAmount) || 0),
-    0,
-  );
-  const totalPercent = funds.reduce(
-    (previous, current) => previous + (parseFloat(current.targetPercent) || 0),
-    0,
-  );
+  const currentTotal = funds.reduce((previous, current) => previous + current.currentAmount, 0);
+  const totalPercent = funds.reduce((previous, current) => previous + current.targetPercent, 0);
   const validTotalPercent = totalPercent === 100;
 
-  const amountToPurchaseNum = parseFloat(amountToPurchase) || 0;
-  const newTotal = currentTotal + amountToPurchaseNum;
+  const newTotal = currentTotal + amountToPurchase;
 
   const transactions: ITransaction[] = funds.map((fund) => {
     const { currentAmount, targetPercent } = fund;
-    const currentAmountFloat = parseFloat(currentAmount) || 0;
-    const percentMultiplier = (parseInt(targetPercent) || 0) / 100;
+    const percentMultiplier = targetPercent / 100;
     const target = percentMultiplier * newTotal;
-    const difference = target - currentAmountFloat;
+    const difference = target - currentAmount;
     return { fund, target, difference };
   });
 
   const sellTransactions = transactions.filter((transaction) => transaction.difference < 0);
   const totalSell = sellTransactions.reduce((prev, curr) => prev + curr.difference, 0);
   const buyTransactions = transactions.filter((transaction) => transaction.difference > 0);
-  const newDenominator = buyTransactions.reduce(
-    (prev, curr) => prev + (parseInt(curr.fund.targetPercent) || 0),
-    0,
-  );
+  const newDenominator = buyTransactions.reduce((prev, curr) => prev + curr.fund.targetPercent, 0);
   const buyTransactionsMinimizingSales: ITransaction[] = buyTransactions.map((transaction) => {
     // note this is not guaranteed to remove all sells
-    const newPercentMultiplier = (parseInt(transaction.fund.targetPercent) || 0) / newDenominator;
+    const newPercentMultiplier = transaction.fund.targetPercent / newDenominator;
     const difference = transaction.difference + totalSell * newPercentMultiplier;
-    const target = (parseFloat(transaction.fund.currentAmount) || 0) + difference;
+    const target = transaction.fund.currentAmount + difference;
     return { ...transaction, target, difference };
   });
 
@@ -74,10 +63,10 @@ function App() {
           </label>
           <input
             type="number"
-            value={fund.currentAmount}
+            defaultValue={fund.currentAmount}
             onChange={(e) => {
               const newFunds = [...funds];
-              newFunds[index].currentAmount = e.target.value;
+              newFunds[index].currentAmount = parseFloat(e.target.value) || 0;
               setFunds(newFunds);
             }}
           />
@@ -93,8 +82,8 @@ function App() {
         <label>Amount in CAD</label>
         <input
           type="number"
-          value={amountToPurchase}
-          onChange={(e) => setAmountToPurchase(e.target.value)}
+          defaultValue={amountToPurchase}
+          onChange={(e) => setAmountToPurchase(parseFloat(e.target.value) || 0)}
         />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
@@ -113,10 +102,10 @@ function App() {
           </label>
           <input
             type="number"
-            value={fund.targetPercent}
+            defaultValue={fund.targetPercent}
             onChange={(e) => {
               const newFunds = [...funds];
-              newFunds[index].targetPercent = e.target.value;
+              newFunds[index].targetPercent = parseInt(e.target.value) ?? 0;
               setFunds(newFunds);
             }}
           />
