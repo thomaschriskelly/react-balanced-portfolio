@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/react-balanced-portfolio/static/css/main.8236914c.chunk.css",
-    "main.js": "/react-balanced-portfolio/static/js/main.9c34bb18.chunk.js",
-    "main.js.map": "/react-balanced-portfolio/static/js/main.9c34bb18.chunk.js.map",
-    "runtime-main.js": "/react-balanced-portfolio/static/js/runtime-main.08aba12b.js",
-    "runtime-main.js.map": "/react-balanced-portfolio/static/js/runtime-main.08aba12b.js.map",
-    "static/js/2.dfd2eed7.chunk.js": "/react-balanced-portfolio/static/js/2.dfd2eed7.chunk.js",
-    "static/js/2.dfd2eed7.chunk.js.map": "/react-balanced-portfolio/static/js/2.dfd2eed7.chunk.js.map",
-    "static/js/3.a0ddaf22.chunk.js": "/react-balanced-portfolio/static/js/3.a0ddaf22.chunk.js",
-    "static/js/3.a0ddaf22.chunk.js.map": "/react-balanced-portfolio/static/js/3.a0ddaf22.chunk.js.map",
+    "main.css": "/react-balanced-portfolio/static/css/main.10479416.chunk.css",
+    "main.js": "/react-balanced-portfolio/static/js/main.57b960a3.chunk.js",
+    "main.js.map": "/react-balanced-portfolio/static/js/main.57b960a3.chunk.js.map",
+    "runtime-main.js": "/react-balanced-portfolio/static/js/runtime-main.04ef1413.js",
+    "runtime-main.js.map": "/react-balanced-portfolio/static/js/runtime-main.04ef1413.js.map",
+    "static/js/2.d32ac91f.chunk.js": "/react-balanced-portfolio/static/js/2.d32ac91f.chunk.js",
+    "static/js/2.d32ac91f.chunk.js.map": "/react-balanced-portfolio/static/js/2.d32ac91f.chunk.js.map",
+    "static/js/3.66d52ee0.chunk.js": "/react-balanced-portfolio/static/js/3.66d52ee0.chunk.js",
+    "static/js/3.66d52ee0.chunk.js.map": "/react-balanced-portfolio/static/js/3.66d52ee0.chunk.js.map",
     "index.html": "/react-balanced-portfolio/index.html",
-    "static/css/main.8236914c.chunk.css.map": "/react-balanced-portfolio/static/css/main.8236914c.chunk.css.map",
-    "static/js/2.dfd2eed7.chunk.js.LICENSE.txt": "/react-balanced-portfolio/static/js/2.dfd2eed7.chunk.js.LICENSE.txt"
+    "static/css/main.10479416.chunk.css.map": "/react-balanced-portfolio/static/css/main.10479416.chunk.css.map",
+    "static/js/2.d32ac91f.chunk.js.LICENSE.txt": "/react-balanced-portfolio/static/js/2.d32ac91f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.08aba12b.js",
-    "static/js/2.dfd2eed7.chunk.js",
-    "static/css/main.8236914c.chunk.css",
-    "static/js/main.9c34bb18.chunk.js"
+    "static/js/runtime-main.04ef1413.js",
+    "static/js/2.d32ac91f.chunk.js",
+    "static/css/main.10479416.chunk.css",
+    "static/js/main.57b960a3.chunk.js"
   ]
 }
