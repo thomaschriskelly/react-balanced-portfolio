@@ -44,14 +44,14 @@ function App() {
     return { fund, target, difference };
   });
 
-  const fundsToSell = transactions.filter((transaction) => transaction.difference < 0);
-  const totalSell = fundsToSell.reduce((prev, curr) => prev + curr.difference, 0);
-  const fundsToBuy = transactions.filter((transaction) => transaction.difference > 0);
-  const newDenominator = fundsToBuy.reduce(
+  const sellTransactions = transactions.filter((transaction) => transaction.difference < 0);
+  const totalSell = sellTransactions.reduce((prev, curr) => prev + curr.difference, 0);
+  const buyTransactions = transactions.filter((transaction) => transaction.difference > 0);
+  const newDenominator = buyTransactions.reduce(
     (prev, curr) => prev + (parseInt(curr.fund.targetPercent) || 0),
     0,
   );
-  const fundsToBuyMinimizingSales: ITransaction[] = fundsToBuy.map((transaction) => {
+  const buyTransactionsMinimizingSales: ITransaction[] = buyTransactions.map((transaction) => {
     // note this is not guaranteed to remove all sells
     const newPercentMultiplier = (parseInt(transaction.fund.targetPercent) || 0) / newDenominator;
     const difference = transaction.difference + totalSell * newPercentMultiplier;
@@ -135,11 +135,11 @@ function App() {
               <Transaction {...transaction} key={transaction.fund.code} />
             ))}
           </ul>
-          {fundsToSell.length ? (
+          {sellTransactions.length ? (
             <>
               <h3>To minimize selling...</h3>
               <ul>
-                {fundsToBuyMinimizingSales.map((transaction) => (
+                {buyTransactionsMinimizingSales.map((transaction) => (
                   <Transaction {...transaction} key={transaction.fund.code} />
                 ))}
               </ul>
