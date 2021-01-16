@@ -25,7 +25,6 @@ function App() {
   const currentTotal = funds.reduce((previous, current) => previous + current.currentAmount, 0);
   const totalPercent = funds.reduce((previous, current) => previous + current.targetPercent, 0);
   const validTotalPercent = totalPercent === 100;
-
   const newTotal = currentTotal + amountToPurchase;
 
   const transactions: ITransaction[] = funds.map((fund) => {
@@ -42,8 +41,8 @@ function App() {
   const newDenominator = buyTransactions.reduce((prev, curr) => prev + curr.fund.targetPercent, 0);
   const buyTransactionsMinimizingSales: ITransaction[] = buyTransactions.map((transaction) => {
     // note this is not guaranteed to remove all sells
-    const newPercentMultiplier = transaction.fund.targetPercent / newDenominator;
-    const difference = transaction.difference + totalSell * newPercentMultiplier;
+    const percentMultiplier = transaction.fund.targetPercent / newDenominator;
+    const difference = transaction.difference + totalSell * percentMultiplier;
     const target = transaction.fund.currentAmount + difference;
     return { ...transaction, target, difference };
   });
@@ -63,7 +62,6 @@ function App() {
           </label>
           <input
             type="number"
-            defaultValue={fund.currentAmount}
             onChange={(e) => {
               const newFunds = [...funds];
               newFunds[index].currentAmount = parseFloat(e.target.value) || 0;
@@ -82,7 +80,6 @@ function App() {
         <label>Amount in CAD</label>
         <input
           type="number"
-          defaultValue={amountToPurchase}
           onChange={(e) => setAmountToPurchase(parseFloat(e.target.value) || 0)}
         />
       </div>
