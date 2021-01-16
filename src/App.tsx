@@ -13,13 +13,21 @@ interface ITransaction {
   difference: number;
 }
 
+const rowStyle: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '350px',
+};
+
+const balanced = [
+  { name: 'Canadian Index', code: 'TDB900', currentAmount: 0, targetPercent: 25 },
+  { name: 'USA Index', code: 'TDB902', currentAmount: 0, targetPercent: 25 },
+  { name: 'Canadian Bonds', code: 'TDB909', currentAmount: 0, targetPercent: 25 },
+  { name: 'International Index', code: 'TDB911', currentAmount: 0, targetPercent: 25 },
+];
+
 function App() {
-  const [funds, setFunds] = useState<IFund[]>([
-    { name: 'Canadian Index', code: 'TDB900', currentAmount: 0, targetPercent: 25 },
-    { name: 'USA Index', code: 'TDB902', currentAmount: 0, targetPercent: 25 },
-    { name: 'Canadian Bonds', code: 'TDB909', currentAmount: 0, targetPercent: 25 },
-    { name: 'International Index', code: 'TDB911', currentAmount: 0, targetPercent: 25 },
-  ]);
+  const [funds, setFunds] = useState<IFund[]>(balanced);
   const [amountToPurchase, setAmountToPurchase] = useState(0);
 
   const currentTotal = funds.reduce((previous, current) => previous + current.currentAmount, 0);
@@ -53,10 +61,7 @@ function App() {
 
       <h3>Current market values</h3>
       {funds.map((fund, index) => (
-        <div
-          style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}
-          key={index}
-        >
+        <div style={rowStyle} key={index}>
           <label>
             $ {fund.name} ({fund.code}):
           </label>
@@ -70,36 +75,33 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
+      <div style={rowStyle}>
         <label>Total:</label>
         <span>${currentTotal.toLocaleString()}</span>
       </div>
 
       <h3>Amount to buy</h3>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
+      <div style={rowStyle}>
         <label>Amount in CAD</label>
         <input
           type="number"
           onChange={(e) => setAmountToPurchase(parseFloat(e.target.value) || 0)}
         />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
+      <div style={rowStyle}>
         <label>New total:</label>
         <span>${newTotal.toLocaleString()}</span>
       </div>
 
       <h3>Desired breakdown</h3>
       {funds.map((fund, index) => (
-        <div
-          style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}
-          key={index}
-        >
+        <div style={rowStyle} key={index}>
           <label>
             % {fund.name} ({fund.code}):
           </label>
           <input
             type="number"
-            defaultValue={fund.targetPercent}
+            value={fund.targetPercent}
             onChange={(e) => {
               const newFunds = [...funds];
               newFunds[index].targetPercent = parseInt(e.target.value) ?? 0;
@@ -108,7 +110,7 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
+      <div style={rowStyle}>
         <label>Total:</label>
         <span style={{ color: validTotalPercent ? undefined : 'red' }}>{totalPercent}%</span>
       </div>
