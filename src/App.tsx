@@ -45,12 +45,13 @@ function App() {
 
   const fundsToSell = massagedFunds.filter((fund) => fund.difference < 0);
   const totalSell = fundsToSell.reduce((prev, curr) => prev + curr.difference, 0);
-  const fundsToBuy = massagedFunds.filter((fund) => fund.difference >= 0);
+  const fundsToBuy = massagedFunds.filter((fund) => fund.difference > 0);
   const newDenominator = fundsToBuy.reduce(
     (prev, curr) => prev + (parseInt(curr.targetPercent) || 0),
     0,
   );
-  const fundsToBuyWithoutSelling: IFundWithTransaction[] = fundsToBuy.map((fund) => {
+  const fundsToBuyMinimizingSales: IFundWithTransaction[] = fundsToBuy.map((fund) => {
+    // note this is not guaranteed to remove all sells
     const newPercentMultiplier = (parseInt(fund.targetPercent) || 0) / newDenominator;
     const difference = fund.difference + totalSell * newPercentMultiplier;
     const target = (parseFloat(fund.currentAmount) || 0) + difference;
@@ -137,7 +138,7 @@ function App() {
             <>
               <h3>To minimize selling...</h3>
               <ul>
-                {fundsToBuyWithoutSelling.map((fund) => (
+                {fundsToBuyMinimizingSales.map((fund) => (
                   <Fund {...fund} key={fund.code} />
                 ))}
               </ul>
