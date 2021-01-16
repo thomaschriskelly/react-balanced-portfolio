@@ -1,3 +1,16 @@
+# Portfolio Balancer
+Hosted at https://thomaschriskelly.github.io/react-balanced-portfolio/
+
+## To run
+`npm start`
+
+## To deploy
+`npm run build`
+
+`npm run deploy`
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
