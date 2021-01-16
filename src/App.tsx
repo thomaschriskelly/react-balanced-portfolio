@@ -7,7 +7,8 @@ interface IFund {
   targetPercent: string;
 }
 
-interface IFundWithTransaction extends IFund {
+interface ITransaction {
+  fund: IFund;
   target: number;
   difference: number;
 }
@@ -34,28 +35,28 @@ function App() {
   const amountToPurchaseNum = parseFloat(amountToPurchase) || 0;
   const newTotal = currentTotal + amountToPurchaseNum;
 
-  const massagedFunds: IFundWithTransaction[] = funds.map((fund) => {
+  const transactions: ITransaction[] = funds.map((fund) => {
     const { currentAmount, targetPercent } = fund;
     const currentAmountFloat = parseFloat(currentAmount) || 0;
     const percentMultiplier = (parseInt(targetPercent) || 0) / 100;
     const target = percentMultiplier * newTotal;
     const difference = target - currentAmountFloat;
-    return { ...fund, target, difference };
+    return { fund, target, difference };
   });
 
-  const fundsToSell = massagedFunds.filter((fund) => fund.difference < 0);
+  const fundsToSell = transactions.filter((transaction) => transaction.difference < 0);
   const totalSell = fundsToSell.reduce((prev, curr) => prev + curr.difference, 0);
-  const fundsToBuy = massagedFunds.filter((fund) => fund.difference > 0);
+  const fundsToBuy = transactions.filter((transaction) => transaction.difference > 0);
   const newDenominator = fundsToBuy.reduce(
-    (prev, curr) => prev + (parseInt(curr.targetPercent) || 0),
+    (prev, curr) => prev + (parseInt(curr.fund.targetPercent) || 0),
     0,
   );
-  const fundsToBuyMinimizingSales: IFundWithTransaction[] = fundsToBuy.map((fund) => {
+  const fundsToBuyMinimizingSales: ITransaction[] = fundsToBuy.map((transaction) => {
     // note this is not guaranteed to remove all sells
-    const newPercentMultiplier = (parseInt(fund.targetPercent) || 0) / newDenominator;
-    const difference = fund.difference + totalSell * newPercentMultiplier;
-    const target = (parseFloat(fund.currentAmount) || 0) + difference;
-    return { ...fund, target, difference };
+    const newPercentMultiplier = (parseInt(transaction.fund.targetPercent) || 0) / newDenominator;
+    const difference = transaction.difference + totalSell * newPercentMultiplier;
+    const target = (parseFloat(transaction.fund.currentAmount) || 0) + difference;
+    return { ...transaction, target, difference };
   });
 
   return (
@@ -130,16 +131,16 @@ function App() {
         <>
           <h3>Therefore...</h3>
           <ul>
-            {massagedFunds.map((fund) => (
-              <Fund {...fund} key={fund.code} />
+            {transactions.map((transaction) => (
+              <Transaction {...transaction} key={transaction.fund.code} />
             ))}
           </ul>
           {fundsToSell.length ? (
             <>
               <h3>To minimize selling...</h3>
               <ul>
-                {fundsToBuyMinimizingSales.map((fund) => (
-                  <Fund {...fund} key={fund.code} />
+                {fundsToBuyMinimizingSales.map((transaction) => (
+                  <Transaction {...transaction} key={transaction.fund.code} />
                 ))}
               </ul>
             </>
@@ -150,7 +151,7 @@ function App() {
   );
 }
 
-const Fund: React.FC<IFundWithTransaction> = ({ name, code, target, difference }) => (
+const Transaction: React.FC<ITransaction> = ({ fund, target, difference }) => (
   <li>
     {difference >= 0 ? (
       <>
@@ -169,7 +170,7 @@ const Fund: React.FC<IFundWithTransaction> = ({ name, code, target, difference }
         })}
       </>
     )}{' '}
-    of {name} ({code}) to hit $
+    of {fund.name} ({fund.code}) to hit $
     {target.toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
