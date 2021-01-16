@@ -63,7 +63,10 @@ function App() {
 
       <h3>Current market values</h3>
       {funds.map((fund, index) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+        <div
+          style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}
+          key={index}
+        >
           <label>
             $ {fund.name} ({fund.code}):
           </label>
@@ -78,13 +81,13 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>Total:</label>
         <span>${currentTotal.toLocaleString()}</span>
       </div>
 
       <h3>Amount to buy</h3>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>Amount in CAD</label>
         <input
           type="number"
@@ -92,14 +95,17 @@ function App() {
           onChange={(e) => setAmountToPurchase(e.target.value)}
         />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>New total:</label>
         <span>${newTotal.toLocaleString()}</span>
       </div>
 
       <h3>Desired breakdown</h3>
       {funds.map((fund, index) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+        <div
+          style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}
+          key={index}
+        >
           <label>
             % {fund.name} ({fund.code}):
           </label>
@@ -114,7 +120,7 @@ function App() {
           />
         </div>
       ))}
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '400px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px' }}>
         <label>Total:</label>
         <span style={{ color: validTotalPercent ? undefined : 'red' }}>{totalPercent}%</span>
       </div>
@@ -122,11 +128,19 @@ function App() {
       {validTotalPercent ? (
         <>
           <h3>Therefore...</h3>
-          <ul>{massagedFunds.map(Fund)}</ul>
+          <ul>
+            {massagedFunds.map((fund) => (
+              <Fund {...fund} key={fund.code} />
+            ))}
+          </ul>
           {fundsToSell.length ? (
             <>
               <h3>To minimize selling...</h3>
-              <ul>{fundsToBuyWithoutSelling.map(Fund)}</ul>
+              <ul>
+                {fundsToBuyWithoutSelling.map((fund) => (
+                  <Fund {...fund} key={fund.code} />
+                ))}
+              </ul>
             </>
           ) : null}
         </>
