@@ -34,6 +34,13 @@ const balanced: IFund[] = [
   { name: 'International Index', code: FundCode.TDB911, targetPercent: 25 },
 ];
 
+const registered: IFund[] = [
+  { name: 'Canadian Index', code: FundCode.TDB900, targetPercent: 10 },
+  { name: 'USA Index', code: FundCode.TDB902, targetPercent: 30 },
+  { name: 'Canadian Bonds', code: FundCode.TDB909, targetPercent: 30 },
+  { name: 'International Index', code: FundCode.TDB911, targetPercent: 30 },
+];
+
 function App() {
   const [funds, setFunds] = useState<IFund[]>(balanced);
   const [holdings, setHoldings] = useState<Holdings>(() => ({
@@ -118,9 +125,9 @@ function App() {
           </label>
           <input
             type="number"
-            defaultValue={fund.targetPercent}
+            value={fund.targetPercent}
             onChange={(e) => {
-              const newFunds = [...funds];
+              const newFunds: IFund[] = JSON.parse(JSON.stringify(funds));
               newFunds[index].targetPercent = parseInt(e.target.value) || 0;
               setFunds(newFunds);
             }}
@@ -130,6 +137,10 @@ function App() {
       <div style={rowStyle}>
         <label>Total:</label>
         <span style={{ color: validTotalPercent ? undefined : 'red' }}>{totalPercent}%</span>
+      </div>
+      <div style={rowStyle}>
+        <button onClick={() => setFunds(balanced)}>Balanced</button>
+        <button onClick={() => setFunds(registered)}>Registered</button>
       </div>
 
       {validTotalPercent ? (
