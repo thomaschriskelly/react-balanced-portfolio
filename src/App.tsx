@@ -41,6 +41,13 @@ const registered: IFund[] = [
   { name: 'International Index', code: FundCode.TDB911, targetPercent: 30 },
 ];
 
+const taxable: IFund[] = [
+  { name: 'Canadian Index', code: FundCode.TDB900, targetPercent: 40 },
+  { name: 'USA Index', code: FundCode.TDB902, targetPercent: 30 },
+  { name: 'Canadian Bonds', code: FundCode.TDB909, targetPercent: 0 },
+  { name: 'International Index', code: FundCode.TDB911, targetPercent: 30 },
+];
+
 function App() {
   const [funds, setFunds] = useState<IFund[]>(balanced);
   const [holdings, setHoldings] = useState<Holdings>(() => ({
@@ -141,6 +148,7 @@ function App() {
       <div style={rowStyle}>
         <button onClick={() => setFunds(balanced)}>Balanced</button>
         <button onClick={() => setFunds(registered)}>Registered</button>
+        <button onClick={() => setFunds(taxable)}>Taxable</button>
       </div>
 
       {validTotalPercent ? (
