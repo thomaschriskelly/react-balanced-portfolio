@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 
+enum FundCode {
+  TDB900 = 'TDB900',
+  TDB902 = 'TDB902',
+  TDB909 = 'TDB909',
+  TDB911 = 'TDB911',
+}
+
 interface IFund {
   name: string;
-  code: string;
-  currentAmount: number;
+  code: FundCode;
   targetPercent: number;
 }
+
+type Holdings = { [code in FundCode]: number };
 
 interface ITransaction {
   fund: IFund;
@@ -19,24 +27,31 @@ const rowStyle: React.CSSProperties = {
   width: '350px',
 };
 
-const balanced = [
-  { name: 'Canadian Index', code: 'TDB900', currentAmount: 0, targetPercent: 25 },
-  { name: 'USA Index', code: 'TDB902', currentAmount: 0, targetPercent: 25 },
-  { name: 'Canadian Bonds', code: 'TDB909', currentAmount: 0, targetPercent: 25 },
-  { name: 'International Index', code: 'TDB911', currentAmount: 0, targetPercent: 25 },
+const balanced: IFund[] = [
+  { name: 'Canadian Index', code: FundCode.TDB900, targetPercent: 25 },
+  { name: 'USA Index', code: FundCode.TDB902, targetPercent: 25 },
+  { name: 'Canadian Bonds', code: FundCode.TDB909, targetPercent: 25 },
+  { name: 'International Index', code: FundCode.TDB911, targetPercent: 25 },
 ];
 
 function App() {
   const [funds, setFunds] = useState<IFund[]>(balanced);
+  const [holdings, setHoldings] = useState<Holdings>(() => ({
+    TDB900: 0,
+    TDB902: 0,
+    TDB909: 0,
+    TDB911: 0,
+  }));
   const [amountToPurchase, setAmountToPurchase] = useState(0);
 
-  const currentTotal = funds.reduce((previous, current) => previous + current.currentAmount, 0);
+  const currentTotal = Object.values(holdings).reduce((previous, current) => previous + current, 0);
   const totalPercent = funds.reduce((previous, current) => previous + current.targetPercent, 0);
   const validTotalPercent = totalPercent === 100;
   const newTotal = currentTotal + amountToPurchase;
 
   const transactions: ITransaction[] = funds.map((fund) => {
-    const { currentAmount, targetPercent } = fund;
+    const { targetPercent } = fund;
+    const currentAmount = holdings[fund.code];
     const percentMultiplier = targetPercent / 100;
     const target = percentMultiplier * newTotal;
     const difference = target - currentAmount;
@@ -51,7 +66,8 @@ function App() {
     // note this is not guaranteed to remove all sells
     const percentMultiplier = transaction.fund.targetPercent / newDenominator;
     const difference = transaction.difference + totalSell * percentMultiplier;
-    const target = transaction.fund.currentAmount + difference;
+    const currentAmount = holdings[transaction.fund.code];
+    const target = currentAmount + difference;
     return { ...transaction, target, difference };
   });
 
@@ -69,7 +85,8 @@ function App() {
             type="number"
             onChange={(e) => {
               const newFunds = [...funds];
-              newFunds[index].currentAmount = parseFloat(e.target.value) || 0;
+              holdings[fund.code] = parseFloat(e.target.value) || 0;
+              setHoldings(holdings);
               setFunds(newFunds);
             }}
           />
