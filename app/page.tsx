@@ -217,23 +217,38 @@ function App() {
   );
 }
 
-const Transaction: React.FC<ITransaction> = ({ fund, target, difference }) => (
-  <li className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-    {difference >= 0 ? (
-      <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-        Buy ${difference.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+const Transaction: React.FC<ITransaction> = ({ fund, target, difference }) => {
+  const copyAmount = () => {
+    navigator.clipboard.writeText(Math.floor(difference).toString());
+  };
+
+  return (
+    <li className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+      {difference >= 0 ? (
+        <>
+          <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+            Buy ${difference.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </span>
+          <button
+            onClick={copyAmount}
+            className="ml-2 px-2 py-0.5 text-xs rounded border border-black/[.08] dark:border-white/[.145] text-zinc-600 dark:text-zinc-400 hover:bg-black/[.04] dark:hover:bg-[#1a1a1a] transition-colors"
+            title={`Copy $${Math.floor(difference)}`}
+          >
+            Copy
+          </button>
+        </>
+      ) : (
+        <span className="text-red-500 dark:text-red-400 font-medium">
+          Sell ${(-difference).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </span>
+      )}{' '}
+      of {fund.name} ({fund.code}) to hit{' '}
+      <span className="text-zinc-950 dark:text-zinc-50 font-medium">
+        ${target.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
       </span>
-    ) : (
-      <span className="text-red-500 dark:text-red-400 font-medium">
-        Sell ${(-difference).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-      </span>
-    )}{' '}
-    of {fund.name} ({fund.code}) to hit{' '}
-    <span className="text-zinc-950 dark:text-zinc-50 font-medium">
-      ${target.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-    </span>
-  </li>
-);
+    </li>
+  );
+};
 
 export default App;
 
